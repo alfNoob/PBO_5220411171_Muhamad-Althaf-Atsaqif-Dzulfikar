@@ -227,7 +227,7 @@ class Kaos(Baju):
         if depanBelakang == "y":
             return f"Sablon {menu.jenis_sablon[sablon]} depan dan belakang", 2 * menu.harga_sablon[sablon]
         elif depanBelakang == "n":
-            return f"Sablon {sablon}", self.harga_sablon(sablon)
+            return f"Sablon {sablon}", menu.harga_sablon[sablon]
         else:
             print("Pilihan tidak tersedia")
             return None, None

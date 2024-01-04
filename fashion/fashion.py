@@ -85,6 +85,11 @@ class Menu_Items:
         for key, value in self.bahan.items():
             print(f"{key}.-{value}")
 
+    def tampil_merk(self):
+        for key, value in self.merk.items():
+            print(f"{key}.-{value}")
+
+
     def main_menu(self, fashion, data):
         beli = True
         # menu = Menu_Items()
@@ -137,7 +142,7 @@ class Menu_Items:
 
 
                     elif isSablon == "n".lower():
-                        self.tampil_bahan()
+                        self.tampil_merk()
                         pilih_merk = int(input("\nmerk mana yang Anda inginkan:"))
                         merk = self.merk[pilih_merk]
                         harga_merk = self.harga_merk[pilih_merk]
@@ -153,6 +158,7 @@ class Menu_Items:
                     harga_batik = motif['harga kemeja']
                     print(f"Anda memilih batik {motif_batik} dengan harga Rp{harga_batik}\n")
                     pembeli_kemeja = Pembeli(jenis_baju, harga_batik, ukuran, None, None, motif_batik, None)
+                    data.add_inventory(pembeli_kemeja)
 
                 else: 
                     print("pilihan tidak ada")

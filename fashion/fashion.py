@@ -250,7 +250,7 @@ class Pembeli:
 
 
 class DataPembelian(Pembeli):
-    def __init__(self, jenis, harga, ukuran, merk=None, bahan=None, motif=None, jenis_sablon=None):
+    def __init__(self, jenis=None, harga=None, ukuran=None, merk=None, bahan=None, motif=None, jenis_sablon=None):
         super().__init__(jenis, harga, ukuran, merk=None, bahan=None, motif=None, jenis_sablon=None)
         self.inventory = []
 

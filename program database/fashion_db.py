@@ -372,7 +372,7 @@ class Menu_Items:
     def tampil_jenis_sablon(self):
         i = 1
         for key, value in self.jenis_sablon.items():
-            print(f"{key}.-{value}: Rp{self.harga_merk[i]}")
+            print(f"{key}.-{value}: Rp{self.harga_sablon[i]}")
             i += 1
 
     def tampil_bahan(self):

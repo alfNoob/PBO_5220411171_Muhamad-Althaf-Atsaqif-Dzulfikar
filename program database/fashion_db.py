@@ -447,14 +447,17 @@ class Menu_Items:
                         bahan = menu.bahan[numbahan]
                         harga_bahan = menu.harga_bahan[numbahan]
                         depanBelakang = input("Sablon Depan dan belakang? (y/n): ")
-                        if depanBelakang.lower() == 'y':
-                            harga_sablon = 2 * self.harga_sablon[numSablon]
-                        elif depanBelakang.lower() == 'n':
-                            harga_sablon = self.harga_sablon[numSablon]
                         sablon = kaos.sablon(numSablon, depanBelakang)
                         jenis_sablon = menu.jenis_sablon[numSablon]
-                        harga_total = harga_bahan + harga_sablon
-                        db_sablon._db_KaosSablon__update_data_kaos_sablon(db_con, id_update, "kaos", harga_total, ukuran, bahan, jenis_sablon)
+                        if depanBelakang.lower() == 'y':
+                            harga_sablon = 2 * self.harga_sablon[numSablon]
+                            harga_total_sablon_1 = harga_bahan + harga_sablon
+                            db_sablon._db_KaosSablon__update_data_kaos_sablon(db_con, id_update, "kaos", harga_total_sablon_1, ukuran, bahan, jenis_sablon)
+                        elif depanBelakang.lower() == 'n':
+                            harga_sablon = self.harga_sablon[numSablon]
+                            harga_total_sablon_2 = harga_bahan + harga_sablon
+                            db_sablon._db_KaosSablon__update_data_kaos_sablon(db_con, id_update, "kaos", harga_total_sablon_2, ukuran, bahan, jenis_sablon)
+
 
                     elif table_name in ["2", "kaos tidak sablon", 'tidak sablon']:
                         id_tdk_sablon = int(input("Id Kaos Tidak Sablon yang ingin di-updat: e"))
@@ -508,17 +511,23 @@ class Menu_Items:
                             self.tampil_jenis_sablon()
                             numSablon = int(input("\npilih jenis sablon(1/2/3): "))
                             depanBelakang = input("Sablon Depan dan belakang? (y/n): ")
-                            if depanBelakang.lower() == 'y':
-                                harga_sablon = 2 * self.harga_sablon[numSablon]
-                            elif depanBelakang.lower() == 'n':
-                                harga_sablon = self.harga_sablon[numSablon]
                             sablon = kaos.sablon(numSablon, depanBelakang)
                             jenis_sablon = self.jenis_sablon[numSablon]
-                            harga_total = harga_bahan + harga_sablon
-                            pembeli_sablon = Pembeli(jenis_baju, harga_sablon, ukuran, None, bahan, None, jenis_sablon)
-                            data.add_inventory(pembeli_sablon)
-                            db_sablon.insert_data_kaos_sablon(db_con, jenis_baju, harga_sablon, ukuran, bahan, jenis_sablon)
+                            if depanBelakang.lower() == 'y':
+                                harga_sablon = 2 * self.harga_sablon[numSablon]
+                                harga_total = harga_bahan + harga_sablon
+                                pembeli_sablon = Pembeli(jenis_baju, harga_sablon, ukuran, None, bahan, None, jenis_sablon)
+                                data.add_inventory(pembeli_sablon)
+                                db_sablon.insert_data_kaos_sablon(db_con, jenis_baju, harga_total, ukuran, bahan, jenis_sablon)
 
+                            elif depanBelakang.lower() == 'n':
+                                harga_sablon = self.harga_sablon[numSablon]
+                                harga_total = harga_bahan + harga_sablon
+                                pembeli_sablon = Pembeli(jenis_baju, harga_total, ukuran, None, bahan, None, jenis_sablon)
+                                data.add_inventory(pembeli_sablon)
+                                db_sablon.insert_data_kaos_sablon(db_con, jenis_baju, harga_total, ukuran, bahan, jenis_sablon)
+
+                            
 
                         elif isSablon == "n".lower():
                             self.tampil_merk()
@@ -609,7 +618,7 @@ class Kaos(Baju):
         if depanBelakang == "y":
             return f"Sablon {menu.jenis_sablon[sablon]} depan dan belakang", 2 * menu.harga_sablon[sablon]
         elif depanBelakang == "n":
-            return f"Sablon {sablon}", menu.harga_sablon[sablon]
+            return f"Sablon {sablon}", menu.harga_sablon[sablon], menu.harga_bahan[1]
         else:
             print("Pilihan tidak tersedia")
             return None, None

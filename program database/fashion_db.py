@@ -63,6 +63,33 @@ class Database:
         finally:
             cursor.close()
 
+    def get_data_by_id(self, db, table_name, record_id):
+        cursor = db.cursor()
+
+        try:
+            sql = None
+            if table_name == "kaos_sablon":
+                sql = f"SELECT * FROM {table_name} WHERE id_sablon = %s"
+            elif table_name == "kaos_tidak_sablon":
+                sql = f"SELECT * FROM {table_name} WHERE id__tidaksablon = %s"
+            elif table_name == "kemeja":
+                sql = f"SELECT * FROM {table_name} WHERE id_kemeja = %s"
+            cursor.execute(sql, (record_id,))
+            row = cursor.fetchone()
+
+            if row:
+                table = PrettyTable()
+                table.field_names = [i[0] for i in cursor.description]
+                table.add_row(row)
+                print(table)
+            else:
+                print(f"Tidak ada data dengan id {record_id}")
+
+        except Error as e:
+            print(f"Error: {e}")
+        finally:
+            cursor.close()
+
 
 class db_KaosSablon(Database):
     
@@ -438,6 +465,7 @@ class Menu_Items:
                     table_name = input("Tabel mana yang ingin anda tuju? (1/2/3): ")
                     if table_name in ["1", "kaos sablon", 'sablon']:
                         id_update = int(input("Id sablon yang ingin di-update: "))
+                        db.get_data_by_id(db_con, "kaos_sablon", id_update)
                         menu.tampil_jenis_sablon()
                         numSablon = int(input("\npilih jenis sablon(1/2/3): "))
                         menu.tampil_ukuran()
@@ -461,6 +489,7 @@ class Menu_Items:
 
                     elif table_name in ["2", "kaos tidak sablon", 'tidak sablon']:
                         id_tdk_sablon = int(input("Id Kaos Tidak Sablon yang ingin di-updat: e"))
+                        db.get_data_by_id(db_con, "kaos_tidak_sablon", id_tdk_sablon)
                         menu.tampil_ukuran()
                         ukuran = int(input("Masukkan ukuran Anda: "))
                         menu.tampil_bahan()
@@ -477,6 +506,7 @@ class Menu_Items:
 
                     elif table_name in ["3", "kemeja", "kemeja batik"]:
                         id_kemeja = int(input("masukkan Id Kemeja yang ingin di-update: "))
+                        db.get_data_by_id(db_con, "kemeja", id_kemeja)
                         menu.tampil_ukuran()
                         ukuran = int(input("Masukkan ukuran Anda: "))
                         menu.lihat_motif_baju()
@@ -501,11 +531,11 @@ class Menu_Items:
                 else: 
                     baju.size_of_item(ukuran)
                     print(f"Ukuran Anda: {baju.size_of_item(ukuran)}")
-                    self.tampil_bahan()                
-                    pilih_bahan = int(input("Pilih bahan kaos: "))
-                    bahan = self.bahan[pilih_bahan]
-                    harga_bahan = self.harga_bahan[pilih_bahan]
                     if opsi in ["1", "kaos"] :
+                        self.tampil_bahan()                
+                        pilih_bahan = int(input("Pilih bahan kaos: "))
+                        bahan = self.bahan[pilih_bahan]
+                        harga_bahan = self.harga_bahan[pilih_bahan]
                         isSablon = input("\nApakah kaos Anda ingin disablon?(y/n): ")
                         if isSablon == "y".lower():
                             self.tampil_jenis_sablon()
@@ -525,7 +555,7 @@ class Menu_Items:
                                 harga_total = harga_bahan + harga_sablon
                                 pembeli_sablon = Pembeli(jenis_baju, harga_total, ukuran, None, bahan, None, jenis_sablon)
                                 data.add_inventory(pembeli_sablon)
-                                db_sablon.insert_data_kaos_sablon(db_con, jenis_baju, harga_total, ukuran, bahan, jenis_sablon)
+                                db_sablon.insert_data_kaos_sablon(db_con, "kemeja", harga_total, ukuran, bahan, jenis_sablon)
 
                             
 
@@ -542,6 +572,7 @@ class Menu_Items:
 
 
                     elif opsi in ["2", "kemeja"]:
+                        menu.lihat_motif_baju()
                         pilihMotif = int(input("Pilih motif kemeja: "))
                         motif = kemeja.pilih_motif_kemeja(pilihMotif)
                         motif_batik = motif['kemeja batik']

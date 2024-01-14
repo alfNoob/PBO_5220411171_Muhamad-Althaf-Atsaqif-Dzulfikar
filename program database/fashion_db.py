@@ -580,7 +580,7 @@ class Menu_Items:
                         print(f"Anda memilih batik {motif_batik} dengan harga Rp{harga_batik}\n")
                         pembeli_kemeja = Pembeli(jenis_baju, harga_batik, ukuran, None, None, motif_batik, None)
                         data.add_inventory(pembeli_kemeja)
-                        db_kemeja.insert_data_kemeja(db_con ,jenis_baju, harga_batik, ukuran, motif_batik)
+                        db_kemeja.insert_data_kemeja(db_con ,"kemeja", harga_batik, ukuran, motif_batik)
 
                     else: 
                         print("pilihan tidak ada")

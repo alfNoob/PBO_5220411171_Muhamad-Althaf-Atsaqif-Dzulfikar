@@ -71,7 +71,7 @@ class Database:
             if table_name == "kaos_sablon":
                 sql = f"SELECT * FROM {table_name} WHERE id_sablon = %s"
             elif table_name == "kaos_tidak_sablon":
-                sql = f"SELECT * FROM {table_name} WHERE id__tidaksablon = %s"
+                sql = f"SELECT * FROM {table_name} WHERE id_tidak_sablon = %s"
             elif table_name == "kemeja":
                 sql = f"SELECT * FROM {table_name} WHERE id_kemeja = %s"
             cursor.execute(sql, (record_id,))
@@ -488,7 +488,7 @@ class Menu_Items:
 
 
                     elif table_name in ["2", "kaos tidak sablon", 'tidak sablon']:
-                        id_tdk_sablon = int(input("Id Kaos Tidak Sablon yang ingin di-updat: e"))
+                        id_tdk_sablon = int(input("Id Kaos Tidak Sablon yang ingin di-update: "))
                         db.get_data_by_id(db_con, "kaos_tidak_sablon", id_tdk_sablon)
                         menu.tampil_ukuran()
                         ukuran = int(input("Masukkan ukuran Anda: "))
